@@ -1,8 +1,8 @@
 """
  ******************************************************************************
- * @file: gui_menu_FileNSettings.py
- * @author: Jabed, gyanthp, Tek, Mukesh, Bibek
- * @date: 02.01.2021
+ * @file: run_GUI.py
+ * @author: Jabed-Akhtar (Github)
+ * @date: 05.09.2022
  *****************************************************************************
  * :Description:
  *
@@ -10,8 +10,7 @@
  ******************************************************************************
 """
 
-# imports
-#from utils import CANUtils as canUt
+# Imports
 import os, sys
 sys.path.append(os.getcwd())
 from utils.gui_Widget import *
@@ -21,10 +20,7 @@ UI_WinPOS_Y = 100  # use 0
 AW = 1925  # Application window width 594
 AH = 1000  # Application window height 371
 OFFSET_X = 10
-WINDOW_TITLE = "CANotronics"
-
-var_ActivatedCANChannel = 1
-var_CANBaudrate = 125
+WINDOW_TITLE = "Search-For-Word(s)_Py"
 
 
 class GUI_MainWin(QMainWindow):
@@ -46,6 +42,7 @@ class GUI_MainWin(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        # initializations
         self.initUI()
         self.initOthers()
 
@@ -56,12 +53,12 @@ class GUI_MainWin(QMainWindow):
         :return: nothing
         """
 
+        # adding components to vertical layout (vLayout)
+        self.createGUI_menuBar()
+
         # creating vertical layout for all contents inside GUI
         vLayout = QVBoxLayout()
         self.setLayout(vLayout)
-
-        # adding components to vertical layout (vLayout)
-        self.createGUI_menuBar()
 
         # configuring GUI-Window
         # self.setGeometry(UI_WinPOS_X, UI_WinPOS_Y, AW, AH)  # 594x371mm is the total size of 7inch display
@@ -84,7 +81,7 @@ class GUI_MainWin(QMainWindow):
             here other initialisations, beside the GUIs, are done
         :return: nth
         """
-        pass
+        a_tmp = 0
 
     def createGUI_menuBar(self):
         """
@@ -112,17 +109,7 @@ class GUI_MainWin(QMainWindow):
         # Help menu **********
         self.helpMenu = QMenu("&Help", self)
         self.menuHelpDoc = self.helpMenu.addAction('Doc')
-        self.menuHelpAbt = self.helpMenu.addAction('About CANotronics')
-
-        # can info menu
-        canInfoMenu = QMenu("&Tab", self)
-        self.canMon = QAction("&CAN-Monitor", self, checkable=True)
-        self.canMon.setChecked(True)
-        self.cansend = QAction("&CAN-Send", self, checkable=True)
-        self.config = QAction("&CAN-Info", self, checkable=True)
-        canInfoMenu.addAction(self.canMon)
-        canInfoMenu.addAction(self.cansend)
-        canInfoMenu.addAction(self.config)
+        self.menuHelpAbt = self.helpMenu.addAction('About SearchForWord_Py')
 
         # get triggered as soon as menu_button is clicked
         # config.triggered.connect(lambda: self.canInfo_clicked())
@@ -135,14 +122,14 @@ class GUI_MainWin(QMainWindow):
 
         # adding responses
         # file menu responses
-        self.varSaveOut.triggered.connect(lambda: self.on_carSaveOut_clicked())
+        self.varSaveOut.triggered.connect(lambda: self.on_varSaveOut_clicked())
         self.varExit.triggered.connect(lambda: self.on_Exit_clicked())
         # Help menu responses
         self.menuHelpDoc.triggered.connect(self.on_MenuHelpDoc_clicked)
         self.menuHelpAbt.triggered.connect(self.on_MenuHelpAbt_clicked)
 
 
-    def on_carSaveOut_clicked(self):
+    def on_varSaveOut_clicked(self):
         pass
     
     
@@ -164,6 +151,11 @@ class GUI_MainWin(QMainWindow):
         # msg.buttonClicked.connect(msg)
 
         retval = msg.exec_()
+        print(retval)
+        if retval==1024:
+            self.close()
+        else:
+            pass
 
     def on_MenuHelpDoc_clicked(self):
         print("----->>> MenuHelpDoc clicked!")
@@ -194,5 +186,6 @@ def main():
 
 if __name__ == '__main__':
     main()
+
 
 # ****************************** END OF FILE ******************************

@@ -35,8 +35,6 @@ class WidgetTab(QWidget):
         super(QWidget, self).__init__(parent)
         # configuring Tabs/Groups
         self.confTabs()
-        # configuring/initializing CAN
-        self.confCAN()
 
         # creating a thread object
         self.thread = {}
@@ -67,11 +65,6 @@ class WidgetTab(QWidget):
         # setting the grid layout
         self.setLayout(self.layout)
 
-    def confCAN(self):
-        # initializing CAN-Bus
-        #canUt.confCAN0BdRate125() # selecting can0 and baudrate of 125kBd at startup
-        pass
-
     def createGUI_IN(self):
         """
         :Description:
@@ -90,6 +83,7 @@ class WidgetTab(QWidget):
         self.butSelectFile = QPushButton('Select-File')
         self.selectSeKeyType = QComboBox()
         self.textFromTextKey = QLineEdit()
+        self.textFromFile = QPushButton('Select-File')
         self.butRunSearch = QPushButton('Run')
         
         # editing sub-contents
@@ -101,7 +95,7 @@ class WidgetTab(QWidget):
         self.lay_Form.addRow(QLabel('Select File to search?'), self.butSelectFile)
         self.lay_Form.addRow(QLabel('Text, Texts or From-File'), self.selectSeKeyType)
         self.lay_Form.addRow(QLabel('Text(s)'), self.textFromTextKey)
-        self.lay_Form.addRow(QLabel('Select File with searching keywords'), QLineEdit())
+        self.lay_Form.addRow(QLabel('Select File with searching keywords'), self.textFromFile)
         self.lay_Form.addRow(QLabel('Run Search'), self.butRunSearch)
 
         # configuring the components added in the group
@@ -114,6 +108,7 @@ class WidgetTab(QWidget):
         
         self.butSelectFile.clicked.connect(lambda: self.openFileNamesDialog())
         self.selectSeKeyType.currentIndexChanged.connect(self.on_selectSeKeyType_clicked)
+        self.textFromFile.clicked.connect(lambda: self.on_selectTextKeyWordFromFile_clicked())
         self.butRunSearch.clicked.connect(lambda: self.on_butRunSearch_clicked())
 
         # returning the groupLayout
@@ -164,12 +159,25 @@ class WidgetTab(QWidget):
         file_path = files[0]
         file_path= "'" + files[0] + "'"
         print(file_path)
-        
-        #print(file_path)
             
     def on_selectSeKeyType_clicked(self, i):
         print(i)
+        if i==1:
+            print('---> Search Keywords from Manual-enter!')
+        else:
+            print('---> Search Keywords from File!')
             
+    def on_selectTextKeyWordFromFile_clicked(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        files, _ = QFileDialog.getOpenFileNames(self,"QFileDialog.getOpenFileNames()", "","All Files (*);;Python Files (*.py)", options=options)
+        if files:
+            print(files[0])
+            
+        file_path = files[0]
+        file_path= "'" + files[0] + "'"
+        print(file_path)
+
     def on_butRunSearch_clicked(self):
         print('----->>> on_butRunSearch_clicked entered!')
         #self.files = 'test_scripts/gTest_sample.cpp'
